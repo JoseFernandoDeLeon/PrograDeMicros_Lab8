@@ -42,8 +42,8 @@
 /*------------------------------------------------------------------------------
  * Variables
 ------------------------------------------------------------------------------*/
-uint8_t ADC_disp_val;
-uint8_t ADC_voltage;
+int ADC_disp_val;
+int ADC_voltage;
 
 uint8_t centenas;
 uint8_t decenas;
@@ -73,7 +73,7 @@ uint8_t tabla [16] = {0b00111111,       //[0] 0
  * Prototipos de funciones
 ------------------------------------------------------------------------------*/
 void setup (void);
-void displays (uint8_t num);
+void displays (int num);
 
 /*------------------------------------------------------------------------------
  * Interrupciones
@@ -95,7 +95,7 @@ void __interrupt() isr (void)
         
         if (flags == 0)
         {
-            PORTC = display_val[0];
+            PORTC = display_val[2];
             PORTD = 1;
             flags = 1;
         }
@@ -107,7 +107,7 @@ void __interrupt() isr (void)
         }
         else if (flags == 2)
         {
-            PORTC = display_val[2];
+            PORTC = display_val[0];
             PORTD = 4;
             flags = 0;
         }
@@ -209,16 +209,16 @@ void setup (void){
  * Funciones
 ------------------------------------------------------------------------------*/
 
-void displays (uint8_t num)
+void displays (int num)
 {
 
-    centenas = (int) num/100;
-    residuo = (int) num%100;
+    centenas =  (uint8_t)(num/100);
+    residuo =   num%100;
     
-    decenas = (int) residuo/10;
-    residuo = (int) residuo%10;
+    decenas =   residuo/10;
+    residuo =   residuo%10;
     
-    unidades = (int) residuo;
+    unidades =  residuo;
     
     return;
 }
